@@ -8917,9 +8917,9 @@
     let _vekycSigLastMetrics = null;
     const VEKYC_SIG_DETECT_INTERVAL_MS = 400;
     const VEKYC_SIG_STABLE_NEEDED = 10;        // ~4s of the paper reliably in view before auto-capture
-    const VEKYC_SIG_WHITE_MIN_RATIO = 0.50;    // enough of the frame should be paper-ish (loosened — real indoor lighting rarely gives pure white)
-    const VEKYC_SIG_DARK_MIN_RATIO = 0.004;    // a small amount of dark ink is enough — signatures are thin strokes, not filled blocks
-    const VEKYC_SIG_DARK_MAX_RATIO = 0.62;     // but not the whole frame (e.g. a hand/object covering the lens)
+    const VEKYC_SIG_WHITE_MIN_RATIO = 0.65;    // enough of the frame should be paper-ish (loosened — real indoor lighting rarely gives pure white)
+    const VEKYC_SIG_DARK_MIN_RATIO = 0.40;     // a small amount of dark ink is enough — signatures are thin strokes, not filled blocks
+    const VEKYC_SIG_DARK_MAX_RATIO = 0.65;     // but not the whole frame (e.g. a hand/object covering the lens)
 
     // ----- AI voice: speaks the welcome/greeting message and every question out loud, and
     // lets the user replay the current question via the "Repeat Once Again" button. -----
@@ -8979,7 +8979,7 @@
     let _vekycPendingSpeak = null;
     let _vekycCameraReadyTimer = null;
     let _vekycCameraReady = false; // becomes true only once the camera stream is live AND has settled — gates both the greeting speech and step photo capture
-    const VEKYC_CAMERA_SETTLE_MS = 3400; // ~3-3.5s for the camera preview to properly open before speaking
+    const VEKYC_CAMERA_SETTLE_MS = 1500; // ~1.5s for the camera preview to properly open before speaking
     function vekycFlushPendingSpeak() {
         _vekycCameraReady = true;
         if (_vekycPendingSpeak) { const t = _vekycPendingSpeak; _vekycPendingSpeak = null; vekycSpeakStep(t); }
@@ -9000,8 +9000,8 @@
     // enough to trip an automatic "out of camera frame" fail. They've been relaxed so only a
     // genuinely sustained absence/violation fails the session, and other failure reasons
     // (answer mismatch, background noise) aren't masked by a false "out of frame" trigger.
-    const VEKYC_NO_FACE_LIMIT = 9;       // ~5.4s continuously out of frame — forgiving of brief head turns/lag
-    const VEKYC_MULTI_FACE_LIMIT = 3;    // ~1.8s of a genuinely confident second face — ignores one-off phantom detections
+    const VEKYC_NO_FACE_LIMIT = 5;       // ~3s continuously out of frame — forgiving of brief head turns/lag
+    const VEKYC_MULTI_FACE_LIMIT = 2;    // ~1.2s of a genuinely confident second face — ignores one-off phantom detections
     const VEKYC_FACE_SCORE_THRESHOLD = 0.3;   // lenient — used only to confirm the real face is still present (avoids false "out of frame")
     const VEKYC_FACE_STRONG_THRESHOLD = 0.65; // stricter — only a confident detection counts as a genuine *second* person, so reflections/posters/shadows caught at low confidence don't trigger a false "multiple people" fail
     // Background-noise detection: a real background voice/noise is rarely one perfectly
@@ -9013,8 +9013,8 @@
     // whether they were consecutive — this catches intermittent talking/noise correctly
     // while still ignoring a single stray spike (a cough, a door closing, etc).
     const VEKYC_NOISE_THRESHOLD = 0.075;   // RMS level (0–1 scale) from the mic counted as "noise" — raised so normal room ambience (fan hum, faint echo, mic self-noise) doesn't misfire
-    const VEKYC_NOISE_WINDOW_SIZE = 8;     // look at the last ~4.8s of samples (8 x 600ms)
-    const VEKYC_NOISE_WINDOW_FAIL_COUNT = 4; // fail once at least 4 of those ~4.8s of samples were noisy (~2.4s of real noise, need not be back-to-back) — catches genuine background talking without tripping on a stray cough or click
+    const VEKYC_NOISE_WINDOW_SIZE = 5;     // look at the last ~3s of samples (5 x 600ms)
+    const VEKYC_NOISE_WINDOW_FAIL_COUNT = 3; // fail once at least 3 of those ~3s of samples were noisy (~1.8s of real noise, need not be back-to-back) — catches genuine background talking without tripping on a stray cough or click
 
     function startVideoEkyc(mode) {
         _vekycMode = mode || 'setup';
