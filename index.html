@@ -8917,7 +8917,7 @@
     let _vekycSigLastMetrics = null;
     const VEKYC_SIG_DETECT_INTERVAL_MS = 400;
     const VEKYC_SIG_STABLE_NEEDED = 10;        // ~4s of the paper reliably in view before auto-capture
-    const VEKYC_SIG_WHITE_MIN_RATIO = 0.70;    // enough of the frame should be paper-ish (loosened — real indoor lighting rarely gives pure white)
+    const VEKYC_SIG_WHITE_MIN_RATIO = 0.40;    // enough of the frame should be paper-ish (loosened — real indoor lighting rarely gives pure white)
     const VEKYC_SIG_DARK_MIN_RATIO = 0.004;    // a small amount of dark ink is enough — signatures are thin strokes, not filled blocks
     const VEKYC_SIG_DARK_MAX_RATIO = 0.65;     // but not the whole frame (e.g. a hand/object covering the lens)
 
