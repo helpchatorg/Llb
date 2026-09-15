@@ -8917,8 +8917,8 @@
     let _vekycSigLastMetrics = null;
     const VEKYC_SIG_DETECT_INTERVAL_MS = 400;
     const VEKYC_SIG_STABLE_NEEDED = 10;        // ~4s of the paper reliably in view before auto-capture
-    const VEKYC_SIG_WHITE_MIN_RATIO = 0.65;    // enough of the frame should be paper-ish (loosened — real indoor lighting rarely gives pure white)
-    const VEKYC_SIG_DARK_MIN_RATIO = 0.40;     // a small amount of dark ink is enough — signatures are thin strokes, not filled blocks
+    const VEKYC_SIG_WHITE_MIN_RATIO = 0.50;    // enough of the frame should be paper-ish (loosened — real indoor lighting rarely gives pure white)
+    const VEKYC_SIG_DARK_MIN_RATIO = 0.15;     // a small amount of dark ink is enough — signatures are thin strokes, not filled blocks
     const VEKYC_SIG_DARK_MAX_RATIO = 0.65;     // but not the whole frame (e.g. a hand/object covering the lens)
 
     // ----- AI voice: speaks the welcome/greeting message and every question out loud, and
@@ -8979,7 +8979,7 @@
     let _vekycPendingSpeak = null;
     let _vekycCameraReadyTimer = null;
     let _vekycCameraReady = false; // becomes true only once the camera stream is live AND has settled — gates both the greeting speech and step photo capture
-    const VEKYC_CAMERA_SETTLE_MS = 1500; // ~1.5s for the camera preview to properly open before speaking
+    const VEKYC_CAMERA_SETTLE_MS = 500; // ~0.5s for the camera preview to properly open before speaking
     function vekycFlushPendingSpeak() {
         _vekycCameraReady = true;
         if (_vekycPendingSpeak) { const t = _vekycPendingSpeak; _vekycPendingSpeak = null; vekycSpeakStep(t); }
